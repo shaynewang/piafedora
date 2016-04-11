@@ -50,6 +50,19 @@ read_user_login( )
   if [ -z $LOGIN ]; then
     error "A login must be provided for the installation to proceed"
   fi
+
+  echo "Do you want to include your password?"
+
+  select yn in "Yes" "No"; do
+	  case $yn in
+		  "Yes" )	echo -n "Please enter your password: "
+				read PASS
+				break;;
+		  "No" )	exit;;
+	  esac
+  done
+
+  echo $PASS
 }
 
 verify_running_as_root( )
@@ -66,7 +79,7 @@ install_python_version( )
     read install_python
     if [ $install_python = 'y' ]; then
       echo "Installing python2.7.."
-      if ! dnf install python2.7; then
+      if ! dnf install python; then
         error "Error installing python2.7 Aborting.."
       fi
     else
@@ -170,8 +183,11 @@ username=$LOGIN
 comp-lzo=yes
 remote=$dns
 connection-type=password
-password-flags=1
+password-flags=0
 ca=/etc/openvpn/ca.crt
+
+[vpn-secrets]
+password=$PASS
 
 [ipv4]
 method=auto
@@ -223,3 +239,4 @@ restart_network_manager
 
 echo "Install successful!"
 exit 0
+

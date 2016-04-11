@@ -8,12 +8,17 @@
 
 -"drhedberg" reported that the script also works with Opensuse 13.2 by replacing dnf with zypper.
 
+-Featured universal password
+
 Based on the Ubuntu installer from PIA
 
-run 
+run
 
-$ git clone https://github.com/shaynewang/piafedora.git 
+$ git clone https://github.com/shaynewang/piafedora.git
 
 $ cd piafedora
 
-$ sudo sh install_fedora22.sh
+$ chmod +x install_fedora.sh
+
+$ sudo ./install_fedora.sh
+
