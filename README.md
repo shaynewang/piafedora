@@ -1,5 +1,13 @@
 # PIA installer for Fedora
 
+For linux setup please refer to 
+
+[private internet access wensite](https://helpdesk.privateinternetaccess.com/hc/en-us/articles/219438217-Installing-the-PIA-App-on-Linux)
+
+
+
+
+
 -This script automatically setup Private Interenet Access VPN for Fedora users.
 
 -Fedora has replaced yum package manager with dnf and this script uses dnf.
