@@ -1,6 +1,6 @@
 # PIA installer for Fedora
 
-For linux setup please refer to 
+This project is no longer up to date. For linux setup please refer to:
 
 [private internet access website](https://helpdesk.privateinternetaccess.com/hc/en-us/articles/219438217-Installing-the-PIA-App-on-Linux)
 
