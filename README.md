@@ -1,6 +1,8 @@
 # PIA installer for Fedora
 
-Based on the Ubuntu installer from PIA. Automatically setup Private Internet Access VPN v24 for Fedora users.
+Based on the Ubuntu installer from PIA. Automatically setup Private Internet Access VPN v65 for Fedora users.
+
+[Changelog](CHANGELOG.md).
 
 ## Versions supported.
 
@@ -15,10 +17,6 @@ _**NOTE**: this script uses dnf._
 
 ## Other distros
 "drhedberg" reported that the script also works with Opensuse 13.2 by replacing dnf with zypper.
-
-# Features supported
-* PIA version 24
-* Universal password
 
 # Install
 
