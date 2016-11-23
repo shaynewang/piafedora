@@ -114,13 +114,13 @@ install_crt( )
   wget -O - https://www.privateinternetaccess.com/openvpn/openvpn.zip > /tmp/openvpn.zip
   echo 'Installing certificate..'
   mkdir -p /etc/openvpn
-  unzip -p /tmp/openvpn.zip ca.rsa.2048.crt > /etc/openvpn/ca.rsa.2048.crt
+  unzip -p /tmp/openvpn.zip ca.rsa.2048.crt > /etc/openvpn/pia_ca.rsa.2048.crt
 }
 
 fix_conflict( )
 {
-  semanage fcontext -a -t home_cert_t /etc/openvpn/ca.rsa.2048.crt
-  restorecon -R -v /etc/openvpn/ca.rsa.2048.crt
+  semanage fcontext -a -t home_cert_t /etc/openvpn/pia_ca.rsa.2048.crt
+  restorecon -R -v /etc/openvpn/pia_ca.rsa.2048.crt
 }
 
 parse_server_info( )
@@ -161,7 +161,7 @@ comp-lzo=yes
 remote=$dns
 connection-type=password
 password-flags=0
-ca=/etc/openvpn/ca.rsa.2048.crt
+ca=/etc/openvpn/pia_ca.rsa.2048.crt
 cipher=AES-128-CBC
 port=1198
 
@@ -176,6 +176,21 @@ EOF
   rm $SERVER_INFO
   IFS='
  	'
+}
+
+check_previous_config( )
+{
+  if ls /etc/NetworkManager/system-connections/PIA* 1> /dev/null 2>&1; then
+    echo -n 'PIA already installed. Try to update? (NOTE: this will remove the original configuration) (y/n): '
+    read remove_old_config
+    if [ $remove_old_config = 'y' ]; then
+      echo "Removing old config.."
+      # TODO: Backup old config
+      rm -f /etc/NetworkManager/system-connections/PIA*
+    else
+      error "Aborting.."
+    fi
+  fi
 }
 
 restart_network_manager( )
@@ -213,6 +228,7 @@ read_user_login
 install_crt
 fix_conflict
 parse_server_info
+check_previous_config
 write_config_files
 restart_network_manager
 
