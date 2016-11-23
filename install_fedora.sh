@@ -201,7 +201,7 @@ restart_network_manager( )
 
 EXITCODE=0
 PROGRAM=`basename $0`
-VERSION=1.0
+VERSION=1.1
 
 while test $# -gt 0
 do
