@@ -1,6 +1,6 @@
 # PIA installer for Fedora (UNOFFICIAL)
 
-Automatically setup Private Internet Access VPN v65 for Fedora users. This is an UNOFICIAL installer that originally was based on the OFICIAL Ubuntu install script. Feel free to check the src.
+Automatically setup Private Internet Access VPN v65 for Fedora users. This is an UNOFICIAL installer that originally was based on the OFICCIAL Ubuntu install script. Feel free to check the src.
 
 [Changelog](CHANGELOG.md).
 
