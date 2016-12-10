@@ -108,42 +108,19 @@ install_open_vpn( )
   fi
 }
 
-copy_crt( )
+install_crt( )
 {
-  echo 'Copying certificate..'
+  echo 'Downloading certificate..'
+  wget -O - https://www.privateinternetaccess.com/openvpn/openvpn.zip > /tmp/openvpn.zip
+  echo 'Installing certificate..'
   mkdir -p /etc/openvpn
-cat << EOF > /etc/openvpn/ca.crt
------BEGIN CERTIFICATE-----
-MIID2jCCA0OgAwIBAgIJAOtqMkR2JSXrMA0GCSqGSIb3DQEBBQUAMIGlMQswCQYD
-VQQGEwJVUzELMAkGA1UECBMCT0gxETAPBgNVBAcTCENvbHVtYnVzMSAwHgYDVQQK
-ExdQcml2YXRlIEludGVybmV0IEFjY2VzczEjMCEGA1UEAxMaUHJpdmF0ZSBJbnRl
-cm5ldCBBY2Nlc3MgQ0ExLzAtBgkqhkiG9w0BCQEWIHNlY3VyZUBwcml2YXRlaW50
-ZXJuZXRhY2Nlc3MuY29tMB4XDTEwMDgyMTE4MjU1NFoXDTIwMDgxODE4MjU1NFow
-gaUxCzAJBgNVBAYTAlVTMQswCQYDVQQIEwJPSDERMA8GA1UEBxMIQ29sdW1idXMx
-IDAeBgNVBAoTF1ByaXZhdGUgSW50ZXJuZXQgQWNjZXNzMSMwIQYDVQQDExpQcml2
-YXRlIEludGVybmV0IEFjY2VzcyBDQTEvMC0GCSqGSIb3DQEJARYgc2VjdXJlQHBy
-aXZhdGVpbnRlcm5ldGFjY2Vzcy5jb20wgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJ
-AoGBAOlVlkHcxfN5HAswpryG7AN9CvcvVzcXvSEo91qAl/IE8H0knKZkIAhe/z3m
-hz0t91dBHh5yfqwrXlGiyilplVB9tfZohvcikGF3G6FFC9j40GKP0/d22JfR2vJt
-4/5JKRBlQc9wllswHZGmPVidQbU0YgoZl00bAySvkX/u1005AgMBAAGjggEOMIIB
-CjAdBgNVHQ4EFgQUl8qwY2t+GN0pa/wfq+YODsxgVQkwgdoGA1UdIwSB0jCBz4AU
-l8qwY2t+GN0pa/wfq+YODsxgVQmhgaukgagwgaUxCzAJBgNVBAYTAlVTMQswCQYD
-VQQIEwJPSDERMA8GA1UEBxMIQ29sdW1idXMxIDAeBgNVBAoTF1ByaXZhdGUgSW50
-ZXJuZXQgQWNjZXNzMSMwIQYDVQQDExpQcml2YXRlIEludGVybmV0IEFjY2VzcyBD
-QTEvMC0GCSqGSIb3DQEJARYgc2VjdXJlQHByaXZhdGVpbnRlcm5ldGFjY2Vzcy5j
-b22CCQDrajJEdiUl6zAMBgNVHRMEBTADAQH/MA0GCSqGSIb3DQEBBQUAA4GBAByH
-atXgZzjFO6qctQWwV31P4qLelZzYndoZ7olY8ANPxl7jlP3YmbE1RzSnWtID9Gge
-fsKHi1jAS9tNP2E+DCZiWcM/5Y7/XKS/6KvrPQT90nM5klK9LfNvS+kFabMmMBe2
-llQlzAzFiIfabACTQn84QLeLOActKhK8hFJy2Gy6
------END CERTIFICATE-----
-EOF
-
+  unzip -p /tmp/openvpn.zip ca.rsa.2048.crt > /etc/openvpn/pia_ca.rsa.2048.crt
 }
 
 fix_conflict( )
 {
-  semanage fcontext -a -t home_cert_t /etc/openvpn/ca.crt
-  restorecon -R -v /etc/openvpn/ca.crt
+  semanage fcontext -a -t home_cert_t /etc/openvpn/pia_ca.rsa.2048.crt
+  restorecon -R -v /etc/openvpn/pia_ca.rsa.2048.crt
 }
 
 parse_server_info( )
@@ -184,7 +161,9 @@ comp-lzo=yes
 remote=$dns
 connection-type=password
 password-flags=0
-ca=/etc/openvpn/ca.crt
+ca=/etc/openvpn/pia_ca.rsa.2048.crt
+cipher=AES-128-CBC
+port=1198
 
 [vpn-secrets]
 password=$PASS
@@ -199,6 +178,21 @@ EOF
  	'
 }
 
+check_previous_config( )
+{
+  if ls /etc/NetworkManager/system-connections/PIA* 1> /dev/null 2>&1; then
+    echo -n 'PIA already installed. Try to update? (NOTE: this will remove the original configuration) (y/n): '
+    read remove_old_config
+    if [ $remove_old_config = 'y' ]; then
+      echo "Removing old config.."
+      # TODO: Backup old config
+      rm -f /etc/NetworkManager/system-connections/PIA*
+    else
+      error "Aborting.."
+    fi
+  fi
+}
+
 restart_network_manager( )
 {
   echo 'Restarting network manager..'
@@ -207,7 +201,7 @@ restart_network_manager( )
 
 EXITCODE=0
 PROGRAM=`basename $0`
-VERSION=1.0
+VERSION=1.1
 
 while test $# -gt 0
 do
@@ -231,12 +225,12 @@ verify_running_as_root
 install_python_version
 install_open_vpn
 read_user_login
-copy_crt
+install_crt
 fix_conflict
 parse_server_info
+check_previous_config
 write_config_files
 restart_network_manager
 
 echo "Install successful!"
 exit 0
-
