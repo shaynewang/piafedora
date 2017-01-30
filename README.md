@@ -7,7 +7,6 @@ Automatically setup Private Internet Access VPN v65 for Fedora users. This is an
 ## Versions supported.
 
 * Fedora 22 desktop
-* Fedora 24 desktop
 * Fedora 23 Workstation.
 * Fedora 24 Workstation.
 * Fedora 25 Workstation.
