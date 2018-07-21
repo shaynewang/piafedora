@@ -1,36 +1,17 @@
 # PIA installer for Fedora (UNOFFICIAL)
 
-Automatically setup Private Internet Access VPN v65 for Fedora users. This is an UNOFICIAL installer that originally was based on the OFICCIAL Ubuntu install script. Feel free to check the src.
 
 [Changelog](CHANGELOG.md).
-
-## Versions supported.
-
-* Fedora 22 desktop
-* Fedora 23 Workstation.
-* Fedora 24 Workstation.
-* Fedora 25 Workstation.
-* Fedora 26 Workstation.
-* Fedora 27 Workstation.
-
-It may work with other versions. This script has not been tested with Eariler edition Fedora.
-
-_**NOTE**: this script uses dnf._
 
 ## Other distros
 "drhedberg" reported that the script also works with Opensuse 13.2 by replacing dnf with zypper.
 "edouardmenayde" [solution](https://github.com/edouardmenayde/pia-fedora) for v81 support.
 
-## Install
-
-```
-git clone https://github.com/shaynewang/piafedora.git
-cd piafedora
-chmod +x install_fedora.sh
-sudo ./install_fedora.sh
-```
-
-## v81
+## Updated for v81
+Based off of the official installer 
+[here](https://www.privateinternetaccess.com/installer/download_installer_linux)
+I had to do some changes to the original installer to install required packages 
+via dnf. Check details below for detailed changes.
 
 ### Versions tested
 
@@ -79,3 +60,30 @@ In line 155 installer.rb add the following lines:
 ```
 These line install dependencies for fedora systems. Official installer supports Pacman(Archlinux). I'm not
 sure why fedora is not supported...
+
+## For PIA V61
+
+Automatically setup Private Internet Access VPN v65 for Fedora users. This is an UNOFFICIAL installer that originally was based on the OFFICIAL Ubuntu install script. Feel free to check the src.
+
+## Versions supported.
+
+* Fedora 22 desktop
+* Fedora 23 Workstation.
+* Fedora 24 Workstation.
+* Fedora 25 Workstation.
+* Fedora 26 Workstation.
+* Fedora 27 Workstation.
+
+It may work with other versions. This script has not been tested with earlier edition Fedora.
+
+_**NOTE**: this script uses dnf._
+
+
+## Install
+
+```
+git clone https://github.com/shaynewang/piafedora.git
+cd piafedora
+chmod +x install_fedora.sh
+sudo ./install_fedora.sh
+```
