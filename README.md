@@ -1,7 +1,7 @@
 # PIA installer for Fedora (UNOFFICIAL)
 
 *Disclaimer: Installation and use of any software made by third party developers is at your own discretion and
-liability. I'm sharing all changes made to the official installer and doing my best to make sure. It's safe
+liability. I'm sharing all changes made to the official installer and doing my best to make sure it's safe
 to use for fellow fedora users.*
 
 **Pull requests and issues are welcomed here**
