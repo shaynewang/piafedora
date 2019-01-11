@@ -20,6 +20,7 @@ via dnf. Check details below for detailed changes.
 
 ### Versions tested
 
+* Fedora 29 Workstation.
 * Fedora 27 Workstation.
 
 Thanks @edouardmenayde for the [solution](https://github.com/edouardmenayde/pia-fedora). 
